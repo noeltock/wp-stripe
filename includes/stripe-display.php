@@ -37,6 +37,10 @@ function wp_stripe_form() {
         </div>
 
         <div class="stripe-row">
+                <input type="url" name="wp_stripe_website" class="wp-stripe-website" placeholder="<?php _e('Website', 'wp-stripe'); ?>" />
+        </div>
+
+        <div class="stripe-row">
                 <textarea name="wp_stripe_comment" class="wp-stripe-comment" placeholder="<?php _e('Comment', 'wp-stripe'); ?>"></textarea>
         </div>
 
@@ -59,29 +63,19 @@ function wp_stripe_form() {
             <div class="stripe-row-right">
                 <span class="stripe-expiry">EXPIRY</span>
                 <select class="card-expiry-month">
-                    <option value="1">01</option>
-                    <option value="2">02</option>
-                    <option value="3">03</option>
-                    <option value="4">04</option>
-                    <option value="5">05</option>
-                    <option value="6">06</option>
-                    <option value="7">07</option>
-                    <option value="8">08</option>
-                    <option value="9">09</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
+                <?php
+                    for ( $i = 1; $i <= 12; $i++ ) {
+                        $month = ( $i < 10 ) ? "0$i" : $i;
+                        echo '<option value="' . $month . '">' . $month . '</option>';
+                    }
+                ?>
                 </select>
                 <span></span>
                 <select class="card-expiry-year">
                 <?php
-                    $year = date(Y,time());
-                    $num = 1;
-
-                    while ( $num <= 7 ) {
-                        echo '<option value="' . $year .'">' . $year . '</option>';
-                        $year++;
-                        $num++;
+                    for ( $i = 0; $i <= 7; $i++ ) {
+                        $year = intval( date( 'Y' ) ) + $i;
+                        echo '<option value="' . $year . '">' . $year . '</option>';
                     }
                 ?>
                 </select>

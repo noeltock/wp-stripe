@@ -57,6 +57,7 @@ echo '<div class="wp-stripe-recent">';
     $custom = get_post_custom( get_the_ID() );
     $name = $custom["wp-stripe-name"][0];
     $email = $custom["wp-stripe-email"][0];
+    $website = $custom["wp-stripe-website"][0];
     $content = get_the_content();
 
     echo '<div class="stripe-item">';
@@ -66,8 +67,16 @@ echo '<div class="wp-stripe-recent">';
     ?>
 
         <div class="stripe-recent-comment">
+            <?php if (!empty($website)) : ?>
+            <div class="stripe-recent-name">
+                <a href="<?php echo $website; ?>" target="_blank"><?php echo $name; ?></a>
+            </div>
+            <?php else : ?>
             <div class="stripe-recent-name"><?php echo $name; ?></div>
+            <?php endif; ?>
+            <?php if (!empty($content)): ?>
             <div class="stripe-recent-content"><?php echo $content; ?></div>
+            <?php endif; ?>
         </div>
 
     </div>
@@ -116,16 +125,9 @@ $limit = $instance['stripe-recent-limit'];
 <p><label for="<?php echo $this->get_field_id( 'stripe-recent-title' ); ?>"><?php _e('Title:', 'wp-stripe'); ?></label>
     <input class="widefat" id="<?php echo $this->get_field_id( 'stripe-recent-title' ); ?>" name="<?php echo $this->get_field_name( 'stripe-recent-title' ); ?>" value="<?php echo $instance['stripe-recent-title']; ?>" /></p>
 <label><?php _e('Display Limit:', 'wp-stripe'); ?></label>
-<select id="<?php echo $this->get_field_id( 'stripe-recent-limit' ); ?>" name="<?php echo $this->get_field_name( 'stripe-recent-limit' ); ?>">
-    <option value='1' <?php selected( $limit, 1); ?>>1</option>
-    <option value='2' <?php selected( $limit, 2); ?>>2</option>
-    <option value='3' <?php selected( $limit, 3); ?>>3</option>
-    <option value='4' <?php selected( $limit, 4); ?>>4</option>
-    <option value='5' <?php selected( $limit, 5); ?>>5</option>
-    <option value='6' <?php selected( $limit, 6); ?>>6</option>
-</select>
-<p><label><?php _e('Text above payments:', 'wp-stripe'); ?></label><textarea class="widefat" rows="5" cols="20" id="<?php echo $this->get_field_id( 'stripe-recent-headdesc' ); ?>" name="<?php echo $this->get_field_name( 'stripe-recent-headdesc' ); ?>"><?php echo $instance['stripe-recent-headdesc']; ?></textarea></p>
-<p><label><?php _e('Text below payments:', 'wp-stripe'); ?></label><textarea class="widefat" rows="5" cols="20" id="<?php echo $this->get_field_id( 'stripe-recent-footdesc' ); ?>" name="<?php echo $this->get_field_name( 'stripe-recent-footdesc' ); ?>"><?php echo $instance['stripe-recent-footdesc']; ?></textarea></p>
+<input type="text" size="2" id="<?php echo $this->get_field_id( 'stripe-recent-limit' ); ?>" name="<?php echo $this->get_field_name( 'stripe-recent-limit' ); ?>" value="<?php echo $limit; ?>" />
+<p><label><?php _e('Text above payments:', 'wp-stripe'); ?></label><textarea class="widefat" rows="5" cols="20" id="<?php echo $this->get_field_id( 'stripe-recent-headdesc' ); ?>" name="<?php echo $this->get_field_name( 'stripe-recent-headdesc' ); ?>"><?php echo isset($instance['stripe-recent-headdesc']) ? $instance['stripe-recent-headdesc'] : ''; ?></textarea></p>
+<p><label><?php _e('Text below payments:', 'wp-stripe'); ?></label><textarea class="widefat" rows="5" cols="20" id="<?php echo $this->get_field_id( 'stripe-recent-footdesc' ); ?>" name="<?php echo $this->get_field_name( 'stripe-recent-footdesc' ); ?>"><?php echo isset($instance['stripe-recent-footdesc']) ? $instance['stripe-recent-footdesc'] : ''; ?></textarea></p>
 <?php
 }
 }
