@@ -76,7 +76,11 @@ function wp_stripe_defaults() {
         'stripe_css_switch' => 'Yes',
         'stripe_api_switch'=>'Yes',
         'stripe_recent_switch'=>'Yes',
-        'stripe_modal_ssl'=>'No'
+        'stripe_modal_ssl'=>'No',
+        'stripe_test_api'=>'',
+        'stripe_test_api_publish'=>'',
+        'stripe_prod_api'=>'',
+        'stripe_prod_api_publish'=>''
     );
 
     update_option('wp_stripe_options', $arr);
