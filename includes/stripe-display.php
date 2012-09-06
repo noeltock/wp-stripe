@@ -79,7 +79,7 @@ function wp_stripe_form() {
                 <span></span>
                 <select class="card-expiry-year">
                 <?php
-                    for ( $i = 0; $i <= 7; $i++ ) {
+                    for ( $i = 0; $i < 7; $i++ ) {
                         $year = intval( date( 'Y' ) ) + $i;
                         echo '<option value="' . $year . '">' . $year . '</option>';
                     }
