@@ -71,6 +71,7 @@ function wp_stripe_options_display_projects() {
             $live = $custom["wp-stripe-live"][0];
             $name = $custom["wp-stripe-name"][0];
             $email = $custom["wp-stripe-email"][0];
+            $website = $custom["wp-stripe-website"][0];
             $content = get_the_content();
             $date = $custom["wp-stripe-date"][0];
             $cleandate = date('d M', $date);

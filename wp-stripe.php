@@ -12,7 +12,7 @@ Author URI: http://www.noeltock.com
 // -----------------------------------------------------
 
 define ( 'WP_STRIPE_VERSION', '1.4.6' );
-define ( 'WP_STRIPE_PATH',  WP_PLUGIN_URL . '/' . end( explode( DIRECTORY_SEPARATOR, dirname( __FILE__ ) ) ) );
+define ( 'WP_STRIPE_PATH', plugins_url( 'wp-stripe' ) );
 
 // Load PHP Lib - https://github.com/stripe/stripe-php
 // -----------------------------------------------------
@@ -76,7 +76,11 @@ function wp_stripe_defaults() {
         'stripe_css_switch' => 'Yes',
         'stripe_api_switch'=>'Yes',
         'stripe_recent_switch'=>'Yes',
-        'stripe_modal_ssl'=>'No'
+        'stripe_modal_ssl'=>'No',
+        'stripe_test_api'=>'',
+        'stripe_test_api_publish'=>'',
+        'stripe_prod_api'=>'',
+        'stripe_prod_api_publish'=>''
     );
 
     update_option('wp_stripe_options', $arr);
@@ -132,7 +136,7 @@ function wp_stripe_thickbox() {
 add_action('wp_print_styles','wp_stripe_thickbox');
 
 function wp_stripe_thickbox_imgs() {
-    $thickbox_path = get_option('siteurl') . '/wp-includes/js/thickbox/';
+    $thickbox_path = site_url() . '/wp-includes/js/thickbox/';
     $stripe_path = WP_STRIPE_PATH . '/images/';
     echo "<script type=\"text/javascript\">\n";
     echo "	var tb_pathToImage = \"${thickbox_path}loadingAnimation.gif\";\n";

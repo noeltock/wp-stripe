@@ -37,6 +37,10 @@ function wp_stripe_form() {
         </div>
 
         <div class="stripe-row">
+                <input type="url" name="wp_stripe_website" class="wp-stripe-website" placeholder="<?php _e('Website', 'wp-stripe'); ?>" />
+        </div>
+
+        <div class="stripe-row">
                 <textarea name="wp_stripe_comment" class="wp-stripe-comment" placeholder="<?php _e('Comment', 'wp-stripe'); ?>"></textarea>
         </div>
 
@@ -75,13 +79,9 @@ function wp_stripe_form() {
                 <span></span>
                 <select class="card-expiry-year">
                 <?php
-                    $year = date(Y,time());
-                    $num = 1;
-
-                    while ( $num <= 7 ) {
-                        echo '<option value="' . $year .'">' . $year . '</option>';
-                        $year++;
-                        $num++;
+                    for ( $i = 0; $i < 7; $i++ ) {
+                        $year = intval( date( 'Y' ) ) + $i;
+                        echo '<option value="' . $year . '">' . $year . '</option>';
                     }
                 ?>
                 </select>

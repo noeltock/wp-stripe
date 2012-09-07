@@ -118,6 +118,7 @@ function wp_stripe_charge_initiate() {
         $public = $_POST['wp_stripe_public'];
         $name = $_POST['wp_stripe_name'];
         $email = $_POST['wp_stripe_email'];
+        $website = $_POST['wp_stripe_website'];
         $amount = str_replace('$', '', $_POST['wp_stripe_amount']) * 100;
         $card = $_POST['stripeToken'];
 
@@ -181,6 +182,7 @@ function wp_stripe_charge_initiate() {
                 update_post_meta( $post_id, 'wp-stripe-public', $public);
                 update_post_meta( $post_id, 'wp-stripe-name', $name);
                 update_post_meta( $post_id, 'wp-stripe-email', $email);
+                update_post_meta( $post_id, 'wp-stripe-website', $website);
 
                 update_post_meta( $post_id, 'wp-stripe-live', $live);
                 update_post_meta( $post_id, 'wp-stripe-date', $created);
