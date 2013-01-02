@@ -35,6 +35,25 @@ function wp_stripe_shortcode( $atts ){
 }
 add_shortcode( 'wp-stripe', 'wp_stripe_shortcode' );
 
+
+function wp_stripe_embedded_shortcode( $atts ){
+
+    $options = get_option('wp_stripe_options');
+
+    $settings = '?keepThis=true&TB_iframe=true&height=580&width=400';
+    $path = WP_STRIPE_PATH . '/includes/stripe-iframe.php'. $settings;
+    $count = 1;
+
+    if ( $options['stripe_modal_ssl'] == 'Yes' ) {
+        $path = str_replace("http", "https", $path, $count);
+    }
+
+    return '<iframe class="wp-stripe-embedded-frame" src="' . $path . '" scrollng="no" frameborder="0" width="440" height="700"></iframe>';
+
+}
+add_shortcode( 'wp-stripe-embedded', 'wp_stripe_embedded_shortcode' );
+
+
 /**
  * Display Legacy Stripe form in-line
  *
@@ -115,7 +134,6 @@ function wp_stripe_charge_initiate() {
 
         // Define/Extract Variables
 
-        $public = $_POST['wp_stripe_public'];
         $name = $_POST['wp_stripe_name'];
         $email = $_POST['wp_stripe_email'];
         $amount = str_replace('$', '', $_POST['wp_stripe_amount']) * 100;
@@ -124,9 +142,11 @@ function wp_stripe_charge_initiate() {
         if ( !$_POST['wp_stripe_comment'] ) {
             $stripe_comment = __('E-mail: ', 'wp-stipe') . $_POST['wp_stripe_email'] . ' - ' . __('This transaction has no additional details', 'wp-stripe');
             $widget_comment = '';
+            $public = 'NO';
         } else {
             $stripe_comment = __('E-mail: ', 'wp-stipe') . $_POST['wp_stripe_email'] . ' - ' . $_POST['wp_stripe_comment'];
             $widget_comment = $_POST['wp_stripe_comment'];
+            $public = 'YES';
         }
 
         // Create Charge
@@ -143,7 +163,17 @@ function wp_stripe_charge_initiate() {
             $paid = $response->paid;
             $fee = $response->fee;
 
-            $result =  '<div class="wp-stripe-notification wp-stripe-success"> ' . __('Success, you just transferred ', 'wp-stripe') . '<span class="wp-stripe-currency">' . $currency . '</span> ' . $amount . ' !</div>';
+		    $options = get_option('wp_stripe_options');
+			
+			//redirect using JavaScript if a success URL is set
+			if ( isset($options['action_success_redirect']) 
+					&& trim($options['action_success_redirect']) !== '') {
+				
+				$result =  '<div class="wp-stripe-notification wp-stripe-success"> ' . __('Success! Thank you. Please wait while the page loads.', 'wp-stripe') . '</div>
+					<script type="text/javascript">parent.window.location = "' . $options['action_success_redirect'] . '";</script>';
+			}else{
+				$result =  '<div class="wp-stripe-notification wp-stripe-success"> ' . __('Success, you just transferred ', 'wp-stripe') . '<span class="wp-stripe-currency">' . $currency . '</span> ' . $amount . ' !</div>';
+			}
 
             // Save Charge
 
@@ -168,14 +198,6 @@ function wp_stripe_charge_initiate() {
                     $live = 'TEST';
                 }
 
-                // Define Public (for Widget)
-
-                if ( $public == 'public' ) {
-                    $public = 'YES';
-                } else {
-                    $public = 'NO';
-                }
-
                 // Update Meta
 
                 update_post_meta( $post_id, 'wp-stripe-public', $public);
@@ -196,7 +218,22 @@ function wp_stripe_charge_initiate() {
 
                 // wp_stripe_update_project_transactions( 'add', $project_id , $post_id );
 
-            }
+				//send success email
+				if ( isset($options['email_confirmation_send']) 
+						&& $options['email_confirmation_send'] == 'Yes') {
+
+					$headers[] = 'From: ' . $options['email_confirmation_from_name'] . ' <' . $options['email_confirmation_from_email'] . '>';
+					$headers[] = 'Bcc: ' . $options['email_confirmation_from_name'] . ' <' . $options['email_confirmation_from_email'] . '>';
+
+					//replace amount placeholder in the message
+					$message = $options['email_confirmation_message'];
+					$message = str_ireplace('%Amount%', $amount, $message);
+					$message = str_ireplace('%Name%', $name, $message);
+					
+					wp_mail( $email, $options['email_confirmation_subject'], $message, $headers );
+					
+				}
+			}
 
         // Error
 
