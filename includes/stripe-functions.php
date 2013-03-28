@@ -122,10 +122,10 @@ function wp_stripe_charge_initiate() {
         $card = $_POST['stripeToken'];
 
         if ( !$_POST['wp_stripe_comment'] ) {
-            $stripe_comment = __('E-mail: ', 'wp-stipe') . $_POST['wp_stripe_email'] . ' - ' . __('This transaction has no additional details', 'wp-stripe');
+            $stripe_comment = __('E-mail: ', 'wp-stripe') . $_POST['wp_stripe_email'] . ' - ' . __('This transaction has no additional details', 'wp-stripe');
             $widget_comment = '';
         } else {
-            $stripe_comment = __('E-mail: ', 'wp-stipe') . $_POST['wp_stripe_email'] . ' - ' . $_POST['wp_stripe_comment'];
+            $stripe_comment = __('E-mail: ', 'wp-stripe') . $_POST['wp_stripe_email'] . ' - ' . $_POST['wp_stripe_comment'];
             $widget_comment = $_POST['wp_stripe_comment'];
         }
 
