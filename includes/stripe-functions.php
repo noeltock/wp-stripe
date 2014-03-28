@@ -142,7 +142,7 @@ function wp_stripe_charge_initiate() {
             $paid = $response->paid;
             $fee = $response->fee;
 
-            $result =  '<div class="wp-stripe-notification wp-stripe-success"> ' . __('Success, you just transferred ', 'wp-stripe') . '<span class="wp-stripe-currency">' . $currency . '</span> ' . $amount . ' !</div>';
+            $result =  '<div class="wp-stripe-notification wp-stripe-success"> ' . __('Thank You! ', 'wp-stripe') . '<span class="wp-stripe-currency">' . $currency . '</span> ' . $amount . ' has been donated !</div>';
 
             // Save Charge
 
