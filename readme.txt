@@ -33,7 +33,7 @@ In order to process transactions in a secure manner, you need to [purchase an SS
 
 = Stripe Limitations =
 
-Stripe is currently only available to users accepting payments in the US (i.e. in order to receive money, you must reside in the US), however the payee or cardholder can be anywhere in the world.
+You should [check if Stripe is available in your country](https://support.stripe.com/questions/what-countries-does-stripe-support), however the payee or cardholder can be anywhere in the world.
 
 = Updates =
 
