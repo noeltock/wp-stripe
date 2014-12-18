@@ -527,3 +527,42 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
     width: 14px;
     height: 14px;
 }
+
+@media (max-width: 767px) {
+  body {
+    margin: 0;
+  }
+  #wp-stripe-wrap {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  form#wp-stripe-payment-form .stripe-submit-button {
+    left: 0px;
+    width: 100%;
+  }
+  form#wp-stripe-payment-form {
+    padding: 10px;
+  }
+  form#wp-stripe-payment-form .stripe-row {
+    padding: 5px 0;
+  }
+  .wp-stripe-poweredby {
+    padding: 10px;
+  }
+  form#wp-stripe-payment-form .wp-stripe-card input.card-cvc {
+    width: 130px;
+  }
+  form#wp-stripe-payment-form textarea,
+  form#wp-stripe-payment-form input {
+    padding: 8px 0px;
+    text-indent: 32px;
+    width: 100%;
+  }
+  .stripe-row-left label, .stripe-row-right label {
+    display: block;
+  }
+  form#wp-stripe-payment-form select {
+    padding: 4px 7px 3px !important;
+  }
+}

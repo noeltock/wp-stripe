@@ -195,3 +195,14 @@ margin-top: expression(0 - parseInt(this.offsetHeight / 2) + (TBWindowMargin = d
 	_margin-bottom:1px;
     overflow:hidden !important;
 }
+
+@media (max-width: 767px ) {
+  #TB_window {
+    width: 100% !important;
+    margin-left: 0 !important;
+    left: 0px !important;
+  }
+  #TB_window iframe{
+    width: 100% !important;
+  }
+}
