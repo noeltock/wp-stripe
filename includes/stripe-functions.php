@@ -20,14 +20,15 @@ function wp_stripe_shortcode( $atts ) {
 	}
 
 	extract( shortcode_atts(array(
-		'cards' => 'true'
+		'cards' => 'true',
+		'button_text' => $options['stripe_header']
 	), $atts ) );
 
 	if ( $cards === 'true' )  {
 		$payments = '<div id="wp-stripe-types"></div>';
 	}
 
-	return '<a class="thickbox" id="wp-stripe-modal-button" title="' . esc_attr( $options['stripe_header'] ) . '" href="' . esc_url( $url ) . '"><span>' . esc_html( $options['stripe_header'] ) . '</span></a>' . $payments;
+	return '<a class="thickbox" id="wp-stripe-modal-button" title="' . esc_attr( $options['stripe_header'] ) . '" href="' . esc_url( $url ) . '"><span>' . esc_html( $button_text ) . '</span></a>' . $payments;
 
 }
 add_shortcode( 'wp-stripe', 'wp_stripe_shortcode' );
