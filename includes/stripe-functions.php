@@ -58,7 +58,7 @@ add_shortcode( 'wp-legacy-stripe', 'wp_stripe_shortcode_legacy' );
  * @since 1.0
  *
  */
-function wp_stripe_charge($amount, $card, $name, $description) {
+function wp_stripe_charge($amount, $card, $name, $email, $comment) {
 
 	$options = get_option( 'wp_stripe_options' );
 
@@ -71,11 +71,13 @@ function wp_stripe_charge($amount, $card, $name, $description) {
 		'card'     => $card,
 		'amount'   => $amount,
 		'currency' => $currency,
+		'description' => $options['stripe_description'],
+		'receipt_email' => $email,
+		'metadata' => array(
+			'email' => $email,
+			'comment' => $comment,
+		),
 	);
-
-	if ( $description ) {
-		$charge['description'] = $description;
-	}
 
 	$response = Stripe_Charge::create( $charge );
 
@@ -125,7 +127,7 @@ function wp_stripe_charge_initiate() {
 		// Create Charge
 		try {
 
-			$response = wp_stripe_charge( $amount, $card, $name, $stripe_comment );
+			$response = wp_stripe_charge( $amount, $card, $name, $email, sanitize_text_field( $_POST['wp_stripe_comment']) );
 
 			$id       = $response->id;
 			$amount   = $response->amount / 100;
