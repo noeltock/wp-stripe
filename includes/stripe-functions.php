@@ -20,14 +20,15 @@ function wp_stripe_shortcode( $atts ) {
 	}
 
 	extract( shortcode_atts(array(
-		'cards' => 'true'
+		'cards' => 'true',
+		'button_text' => $options['stripe_header']
 	), $atts ) );
 
 	if ( $cards === 'true' )  {
 		$payments = '<div id="wp-stripe-types"></div>';
 	}
 
-	return '<a class="thickbox" id="wp-stripe-modal-button" title="' . esc_attr( $options['stripe_header'] ) . '" href="' . esc_url( $url ) . '"><span>' . esc_html( $options['stripe_header'] ) . '</span></a>' . $payments;
+	return '<a class="thickbox" id="wp-stripe-modal-button" title="' . esc_attr( $options['stripe_header'] ) . '" href="' . esc_url( $url ) . '"><span>' . esc_html( $button_text ) . '</span></a>' . $payments;
 
 }
 add_shortcode( 'wp-stripe', 'wp_stripe_shortcode' );
@@ -57,7 +58,7 @@ add_shortcode( 'wp-legacy-stripe', 'wp_stripe_shortcode_legacy' );
  * @since 1.0
  *
  */
-function wp_stripe_charge($amount, $card, $name, $description) {
+function wp_stripe_charge($amount, $card, $name, $email, $comment) {
 
 	$options = get_option( 'wp_stripe_options' );
 
@@ -70,11 +71,13 @@ function wp_stripe_charge($amount, $card, $name, $description) {
 		'card'     => $card,
 		'amount'   => $amount,
 		'currency' => $currency,
+		'description' => $options['stripe_description'],
+		'receipt_email' => $email,
+		'metadata' => array(
+			'email' => $email,
+			'comment' => $comment,
+		),
 	);
-
-	if ( $description ) {
-		$charge['description'] = $description;
-	}
 
 	$response = Stripe_Charge::create( $charge );
 
@@ -124,7 +127,7 @@ function wp_stripe_charge_initiate() {
 		// Create Charge
 		try {
 
-			$response = wp_stripe_charge( $amount, $card, $name, $stripe_comment );
+			$response = wp_stripe_charge( $amount, $card, $name, $email, sanitize_text_field( $_POST['wp_stripe_comment']) );
 
 			$id       = $response->id;
 			$amount   = $response->amount / 100;
