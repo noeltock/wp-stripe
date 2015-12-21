@@ -100,7 +100,7 @@ function load_wp_stripe_js() {
 	wp_enqueue_script( 'wp-stripe-js', WP_STRIPE_URL . 'js/wp-stripe.js', array( 'jquery' ), WP_STRIPE_VERSION );
 
 	// Pass some variables to JS
-	wp_localize_script( 'wp-stripe-js', 'wpstripekey', WP_STRIPE_KEY );
+	wp_localize_script( 'wp-stripe-js', 'wpstripekey', (defined('WP_STRIPE_KEY')? WP_STRIPE_KEY : null));
 	wp_localize_script( 'wp-stripe-js', 'ajaxurl', admin_url( 'admin-ajax.php' ) );
 
 }
