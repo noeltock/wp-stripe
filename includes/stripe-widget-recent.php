@@ -5,7 +5,7 @@ class wp_stripe_recent_widget extends WP_Widget {
 	/**
 	* Widget setup.
 	*/
-	function wp_stripe_recent_widget() {
+	function __construct() {
 
 		/* Widget settings. */
 		$widget_ops = array( 'classname' => 'wp-stripe-recent', 'description' => __( 'Display a list of the latest public donations.', 'wp-stripe' ) );
@@ -14,7 +14,7 @@ class wp_stripe_recent_widget extends WP_Widget {
 		$control_ops = array( 'width' => 200, 'height' => 350, 'id_base' => 'wp-stripe-recent' );
 
 		/* Create the widget. */
-		$this->WP_Widget( 'wp-stripe-recent', __( 'WP Stripe - Recent', 'wp-stripe' ), $widget_ops, $control_ops );
+		parent::__construct( 'wp-stripe-recent', __( 'WP Stripe - Recent', 'wp-stripe' ), $widget_ops, $control_ops );
 
 	}
 
